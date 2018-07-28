@@ -13,6 +13,6 @@ class NotesActivator extends BaseController
     public function handle()
     {
         (new NotesCustom($this->registry))->init();
-        flush_rewrite_rules();
+        \flush_rewrite_rules();
     }
 }

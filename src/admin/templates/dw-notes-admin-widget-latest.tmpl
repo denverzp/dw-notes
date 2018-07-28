@@ -1,0 +1,15 @@
+<?php if(isset($latest_notes)){ ?>
+    <ul>
+	    <?php foreach ($latest_notes as $latest_note) { ?>
+            <li>
+                <a href="<?php echo get_the_permalink($latest_note['ID']) ?>">
+				    <?php echo get_the_title($latest_note['ID']) ?>
+                </a>
+                created by
+                <a href="<?php echo get_edit_user_link($latest_note['post_author']) ?>">
+		            <?php echo get_the_author_meta('display_name', $latest_note['post_author']) ?>
+                </a>
+            </li>
+	    <?php } ?>
+    </ul>
+<?php } ?>

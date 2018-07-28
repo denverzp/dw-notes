@@ -6,6 +6,7 @@ namespace DWNotes\App\Controller;
 use DWNotes\App\Engine\BaseController;
 use DWNotes\App\Engine\Registry;
 use DWNotes\Admin\NotesAdmin;
+use DWNotes\Admin\NotesAdminWidgetLatest;
 use DWNotes\Frontend\NotesFrontend;
 
 /**
@@ -42,13 +43,15 @@ class Notes extends BaseController
     {
         $this->registry->set('notes_type', new NotesCustom($this->registry));
 
+	    $this->registry->set('loader', new NotesLoader($this->registry));
+
         $this->registry->set('plugin_i18n', new NotesI18n($this->registry));
 
         $this->registry->set('plugin_admin', new NotesAdmin($this->registry));
 
-        $this->registry->set('plugin_frontend', new NotesFrontend($this->registry));
+        $this->registry->set('plugin_admin_widget_lates', new NotesAdminWidgetLatest($this->registry));
 
-        $this->registry->set('loader', new NotesLoader($this->registry));
+        $this->registry->set('plugin_frontend', new NotesFrontend($this->registry));
     }
 
     private function custom_types()
@@ -65,6 +68,8 @@ class Notes extends BaseController
     {
         $this->loader->add_action('admin_enqueue_scripts', $this->plugin_admin, 'enqueue_styles');
         $this->loader->add_action('admin_enqueue_scripts', $this->plugin_admin, 'enqueue_scripts');
+
+        $this->loader->add_action('wp_dashboard_setup', $this->plugin_admin_widget_lates, 'add_widget');
     }
 
     private function define_public_hooks()

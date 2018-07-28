@@ -13,6 +13,7 @@ namespace DWNotes\App\Engine;
  * @property \DWNotes\App\Controller\NotesCustom $custom
  * @property \DWNotes\App\Controller\NotesI18N   $plugin_i18n
  * @property \DWNotes\Admin\NotesAdmin           $plugin_admin
+ * @property \DWNotes\Admin\NotesAdminWidgetLatest  $plugin_admin_widget_lates
  * @property \DWNotes\Frontend\NotesFrontend     $plugin_frontend
  */
 class BaseController
