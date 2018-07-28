@@ -12,15 +12,15 @@
  * @since             1.0.0
  *
  * @wordpress-plugin
- * Plugin Name:       dw-notes
- * Plugin URI:        dw-notes
+ * Plugin Name:       Notes
+ * Plugin URI:        //ditsweb.com/dw_notes
  * Description:       This plugin allow create notes and organize it.
  * Version:           1.0.0
  * Author:            ditsweb
  * Author URI:        ditsweb.com
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
- * Text Domain:       dw-notes
+ * Text Domain:       dw_notes
  * Domain Path:       /src/languages
  */
 
@@ -56,8 +56,8 @@ function deactivate_dw_notes()
     \DW\Classes\NotesDeactivator::deactivate();
 }
 
-register_activation_hook(DW_NOTES_APP, 'activate_dw_notes');
-register_deactivation_hook(DW_NOTES_APP, 'deactivate_dw_notes');
+\register_activation_hook(DW_NOTES_APP, 'activate_dw_notes');
+\register_deactivation_hook(DW_NOTES_APP, 'deactivate_dw_notes');
 
 /**
  * Begins execution of the plugin.
@@ -70,7 +70,10 @@ register_deactivation_hook(DW_NOTES_APP, 'deactivate_dw_notes');
  */
 function run_dw_notes()
 {
-    $plugin = new \DW\Classes\Notes();
+	// NotesRegistry
+	$registry = new \DW\Classes\NotesRegistry();
+
+    $plugin = new \DW\Classes\Notes($registry);
     $plugin->run();
 }
 

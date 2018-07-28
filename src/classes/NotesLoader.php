@@ -14,7 +14,7 @@ namespace DW\Classes;
  *
  * @author     ditsweb <dits.web.2017@gmail.com>
  */
-class NotesLoader
+class NotesLoader extends NotesBaseController
 {
     /**
      * The array of actions registered with WordPress.
@@ -39,10 +39,12 @@ class NotesLoader
      *
      * @since    1.0.0
      */
-    public function __construct()
+    public function __construct($registry)
     {
-        $this->actions = array();
-        $this->filters = array();
+    	parent::__construct($registry);
+
+        $this->actions = [];
+        $this->filters = [];
     }
 
     /**
@@ -113,11 +115,11 @@ class NotesLoader
     public function run()
     {
         foreach ($this->filters as $hook) {
-            add_filter($hook['hook'], array($hook['component'], $hook['callback']), $hook['priority'], $hook['accepted_args']);
+            \add_filter($hook['hook'], array($hook['component'], $hook['callback']), $hook['priority'], $hook['accepted_args']);
         }
 
         foreach ($this->actions as $hook) {
-            add_action($hook['hook'], array($hook['component'], $hook['callback']), $hook['priority'], $hook['accepted_args']);
+            \add_action($hook['hook'], array($hook['component'], $hook['callback']), $hook['priority'], $hook['accepted_args']);
         }
     }
 }

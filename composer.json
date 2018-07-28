@@ -1,5 +1,5 @@
 {
-    "name": "ditsweb/dw-notes",
+    "name": "ditsweb/dw_notes",
     "description": "This plugin allow create notes and organize it.",
     "type": "wordpress-plugin",
     "license": "GPL-2.0+",

@@ -6,72 +6,30 @@ use DW\Admin\NotesAdmin;
 use DW\Frontend\NotesFrontend;
 
 /**
- * The file that defines the core plugin class.
- *
- * A class definition that includes attributes and functions used across both the
- * public-facing side of the site and the admin area.
- *
- * @see       ditsweb.com
- * @since      1.0.0
- *
- * This is used to define internationalization, admin-specific hooks, and
- * public-facing site hooks.
- *
- * Also maintains the unique identifier of this plugin as well as the current
- * version of the plugin.
- * @since      1.0.0
- *
- * @author     ditsweb <dits.web.2017@gmail.com>
+ * Class Notes.
  */
-class Notes
+class Notes extends NotesBaseController
 {
     /**
-     * The loader that's responsible for maintaining and registering all hooks that power
-     * the plugin.
+     * Notes constructor.
      *
-     * @since    1.0.0
-     *
-     * @var \Dw\Classes\NotesLoader maintains and registers all hooks for the plugin
+     * @param $registry
      */
-    protected $loader;
-
-    /**
-     * The unique identifier of this plugin.
-     *
-     * @since    1.0.0
-     *
-     * @var string the string used to uniquely identify this plugin
-     */
-    protected $plugin_name;
-
-    /**
-     * The current version of the plugin.
-     *
-     * @since    1.0.0
-     *
-     * @var string the current version of the plugin
-     */
-    protected $version;
-
-    /**
-     * Define the core functionality of the plugin.
-     *
-     * Set the plugin name and the plugin version that can be used throughout the plugin.
-     * Load the dependencies, define the locale, and set the hooks for the admin area and
-     * the public-facing side of the site.
-     *
-     * @since    1.0.0
-     */
-    public function __construct()
+    public function __construct($registry)
     {
+        parent::__construct($registry);
+
         if (defined('DW_NOTES_VERSION')) {
-            $this->version = DW_NOTES_VERSION;
+            $version = DW_NOTES_VERSION;
         } else {
-            $this->version = '1.0.0';
+            $version = '1.0.0';
         }
-        $this->plugin_name = 'dw-notes';
+
+        $this->registry->set('version', $version);
+        $this->registry->set('plugin_name', 'dw_notes');
 
         $this->load_dependencies();
+        $this->custom_types();
         $this->set_locale();
         $this->define_admin_hooks();
         $this->define_public_hooks();
@@ -94,7 +52,20 @@ class Notes
      */
     private function load_dependencies()
     {
-        $this->loader = new NotesLoader();
+        $this->registry->set('notes_type', new NotesPostType($this->registry));
+
+        $this->registry->set('plugin_i18n', new NotesI18n($this->registry));
+
+        $this->registry->set('plugin_admin', new NotesAdmin($this->registry));
+
+        $this->registry->set('plugin_frontend', new NotesFrontend($this->registry));
+
+        $this->registry->set('loader', new NotesLoader($this->registry));
+    }
+
+    private function custom_types()
+    {
+        $this->loader->add_action('init', $this->notes_type, 'init');
     }
 
     /**
@@ -107,9 +78,7 @@ class Notes
      */
     private function set_locale()
     {
-        $plugin_i18n = new NotesI18n();
-
-        $this->loader->add_action('plugins_loaded', $plugin_i18n, 'load_plugin_textdomain');
+        $this->loader->add_action('plugins_loaded', $this->plugin_i18n, 'load_plugin_textdomain');
     }
 
     /**
@@ -120,10 +89,8 @@ class Notes
      */
     private function define_admin_hooks()
     {
-        $plugin_admin = new NotesAdmin($this->get_plugin_name(), $this->get_version());
-
-        $this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_styles');
-        $this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts');
+        $this->loader->add_action('admin_enqueue_scripts', $this->plugin_admin, 'enqueue_styles');
+        $this->loader->add_action('admin_enqueue_scripts', $this->plugin_admin, 'enqueue_scripts');
     }
 
     /**
@@ -134,10 +101,8 @@ class Notes
      */
     private function define_public_hooks()
     {
-        $plugin_public = new NotesFrontend($this->get_plugin_name(), $this->get_version());
-
-        $this->loader->add_action('wp_enqueue_scripts', $plugin_public, 'enqueue_styles');
-        $this->loader->add_action('wp_enqueue_scripts', $plugin_public, 'enqueue_scripts');
+        $this->loader->add_action('wp_enqueue_scripts', $this->plugin_frontend, 'enqueue_styles');
+        $this->loader->add_action('wp_enqueue_scripts', $this->plugin_frontend, 'enqueue_scripts');
     }
 
     /**

@@ -3,20 +3,10 @@
 namespace DW\Classes;
 
 /**
- * Define the internationalization functionality.
- *
- * Loads and defines the internationalization files for this plugin
- * so that it is ready for translation.
- *
- * @see       ditsweb.com
- * @since      1.0.0
- *
- * Loads and defines the internationalization files for this plugin
- * so that it is ready for translation.
- *
- * @author     ditsweb <dits.web.2017@gmail.com>
+ * Class NotesI18n
+ * @package DW\Classes
  */
-class NotesI18n
+class NotesI18n extends NotesBaseController
 {
     /**
      * Load the plugin text domain for translation.
@@ -25,8 +15,8 @@ class NotesI18n
      */
     public function load_plugin_textdomain()
     {
-        load_plugin_textdomain(
-            'dw-notes',
+        \load_plugin_textdomain(
+            'dw_notes',
             false,
             DW_NOTES_DIR.'/languages/'
         );

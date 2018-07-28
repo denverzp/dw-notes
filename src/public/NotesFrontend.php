@@ -2,51 +2,13 @@
 
 namespace DW\Frontend;
 
+use DW\Classes\NotesBaseController;
+
 /**
- * The public-facing functionality of the plugin.
- *
- * @see       ditsweb.com
- * @since      1.0.0
- *
- * Defines the plugin name, version, and two examples hooks for how to
- * enqueue the public-facing stylesheet and JavaScript.
- *
- * @author     ditsweb <dits.web.2017@gmail.com>
+ * Class NotesFrontend.
  */
-class NotesFrontend
+class NotesFrontend extends NotesBaseController
 {
-    /**
-     * The ID of this plugin.
-     *
-     * @since    1.0.0
-     *
-     * @var string the ID of this plugin
-     */
-    private $plugin_name;
-
-    /**
-     * The version of this plugin.
-     *
-     * @since    1.0.0
-     *
-     * @var string the current version of this plugin
-     */
-    private $version;
-
-    /**
-     * Initialize the class and set its properties.
-     *
-     * @since    1.0.0
-     *
-     * @param string $plugin_name the name of the plugin
-     * @param string $version     the version of this plugin
-     */
-    public function __construct($plugin_name, $version)
-    {
-        $this->plugin_name = $plugin_name;
-        $this->version = $version;
-    }
-
     /**
      * Register the stylesheets for the public-facing side of the site.
      *
@@ -66,7 +28,7 @@ class NotesFrontend
          * class.
          */
 
-        wp_enqueue_style($this->plugin_name, plugin_dir_url(__FILE__).'css/dw-notes-public.css', array(), $this->version, 'all');
+        \wp_enqueue_style($this->plugin_name, plugin_dir_url(__FILE__).'css/dw-notes-public.css', array(), $this->version, 'all');
     }
 
     /**
@@ -88,6 +50,6 @@ class NotesFrontend
          * class.
          */
 
-        wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__).'js/dw-notes-public.js', array('jquery'), $this->version, false);
+        \wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__).'js/dw-notes-public.js', array('jquery'), $this->version, false);
     }
 }

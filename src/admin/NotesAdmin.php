@@ -2,6 +2,8 @@
 
 namespace DW\Admin;
 
+use DW\Classes\NotesBaseController;
+
 /**
  * The admin-specific functionality of the plugin.
  *
@@ -13,40 +15,8 @@ namespace DW\Admin;
  *
  * @author     ditsweb <dits.web.2017@gmail.com>
  */
-class NotesAdmin
+class NotesAdmin extends NotesBaseController
 {
-    /**
-     * The ID of this plugin.
-     *
-     * @since    1.0.0
-     *
-     * @var string the ID of this plugin
-     */
-    private $plugin_name;
-
-    /**
-     * The version of this plugin.
-     *
-     * @since    1.0.0
-     *
-     * @var string the current version of this plugin
-     */
-    private $version;
-
-    /**
-     * Initialize the class and set its properties.
-     *
-     * @since    1.0.0
-     *
-     * @param string $plugin_name the name of this plugin
-     * @param string $version     the version of this plugin
-     */
-    public function __construct($plugin_name, $version)
-    {
-        $this->plugin_name = $plugin_name;
-        $this->version = $version;
-    }
-
     /**
      * Register the stylesheets for the admin area.
      *
@@ -66,7 +36,7 @@ class NotesAdmin
          * class.
          */
 
-        wp_enqueue_style($this->plugin_name, DW_NOTES_URL.'admin/css/dw-notes-admin.css', array(), $this->version, 'all');
+        \wp_enqueue_style($this->plugin_name, DW_NOTES_URL.'admin/css/dw-notes-admin.css', array(), $this->version, 'all');
     }
 
     /**
@@ -88,6 +58,6 @@ class NotesAdmin
          * class.
          */
 
-        wp_enqueue_script($this->plugin_name, DW_NOTES_URL.'admin/js/dw-notes-admin.js', array('jquery'), $this->version, false);
+        \wp_enqueue_script($this->plugin_name, DW_NOTES_URL.'admin/js/dw-notes-admin.js', array('jquery'), $this->version, false);
     }
 }
