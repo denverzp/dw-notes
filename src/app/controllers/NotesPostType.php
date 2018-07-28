@@ -14,17 +14,17 @@ class NotesPostType extends NotesBaseController
     {
         //pad taxonomy
         $labels = [
-            'name' => _x('Pads', 'taxonomy general name'),
-            'singular_name' => _x('Pad', 'taxonomy singular name'),
-            'search_items' => __('Search Pads'),
-            'all_items' => __('All Pads'),
-            'parent_item' => __('Parent Pad'),
-            'parent_item_colon' => __('Parent Pad:'),
-            'edit_item' => __('Edit Pad'),
-            'update_item' => __('Update Pad'),
-            'add_new_item' => __('Add New Pad'),
-            'new_item_name' => __('New Pad Name'),
-            'menu_name' => __('Pads'),
+            'name' => _x('Pads', 'taxonomy general name', 'dw_notes'),
+            'singular_name' => _x('Pad', 'taxonomy singular name', 'dw_notes'),
+            'search_items' => __('Search Pads', 'dw_notes'),
+            'all_items' => __('All Pads', 'dw_notes'),
+            'parent_item' => __('Parent Pad', 'dw_notes'),
+            'parent_item_colon' => __('Parent Pad:', 'dw_notes'),
+            'edit_item' => __('Edit Pad', 'dw_notes'),
+            'update_item' => __('Update Pad', 'dw_notes'),
+            'add_new_item' => __('Add New Pad', 'dw_notes'),
+            'new_item_name' => __('New Pad Name', 'dw_notes'),
+            'menu_name' => __('Pads', 'dw_notes'),
         ];
         $args = [
             'hierarchical' => true, // make it hierarchical (like categories)
