@@ -3,21 +3,22 @@
 namespace DWNotes\App\Controller;
 
 
-use DWNotes\App\Engine\NotesBaseController;
-use DWNotes\App\Engine\NotesRegistry;
+use DWNotes\App\Engine\BaseController;
+use DWNotes\App\Engine\Registry;
 use DWNotes\Admin\NotesAdmin;
 use DWNotes\Frontend\NotesFrontend;
 
 /**
- * Class Notes.
+ * Class Notes
+ * @package DWNotes\App\Controller
  */
-class Notes extends NotesBaseController
+class Notes extends BaseController
 {
 	/**
 	 * Notes constructor.
-	 * @param NotesRegistry $registry
+	 * @param Registry $registry
 	 */
-    public function __construct(NotesRegistry $registry)
+    public function __construct(Registry $registry)
     {
         parent::__construct($registry);
 
@@ -39,7 +40,7 @@ class Notes extends NotesBaseController
 
     private function load_dependencies()
     {
-        $this->registry->set('notes_type', new NotesPostType($this->registry));
+        $this->registry->set('notes_type', new NotesCustom($this->registry));
 
         $this->registry->set('plugin_i18n', new NotesI18n($this->registry));
 
@@ -78,7 +79,7 @@ class Notes extends NotesBaseController
     }
 
 	/**
-	 * @return mixed
+	 * @return string
 	 */
     public function get_plugin_name()
     {
@@ -94,7 +95,7 @@ class Notes extends NotesBaseController
     }
 
 	/**
-	 * @return mixed
+	 * @return string
 	 */
     public function get_version()
     {

@@ -2,15 +2,21 @@
 
 namespace DWNotes\App\Controller;
 
-use DWNotes\App\Engine\NotesBaseController;
+use DWNotes\App\Engine\BaseController;
 
 /**
- * Class NotesPostType
- * @package DWNotes\App
+ * Class NotesCustom
+ * @package DWNotes\App\Controller
  */
-class NotesPostType extends NotesBaseController
+class NotesCustom extends BaseController
 {
     public function init()
+    {
+        $this->add_custom_taxonomy();
+        $this->add_custom_post_type();
+    }
+
+    public function add_custom_taxonomy()
     {
         //pad taxonomy
         $labels = [
@@ -26,18 +32,26 @@ class NotesPostType extends NotesBaseController
             'new_item_name' => __('New Pad Name', 'dw_notes'),
             'menu_name' => __('Pads', 'dw_notes'),
         ];
+
         $args = [
-            'hierarchical' => true, // make it hierarchical (like categories)
-            'labels' => $labels,
-            'show_ui' => true,
-            'show_admin_column' => true,
-            'query_var' => true,
+	        'labels' => $labels,
+	        'description' => __('A custom taxonomy for grouping notes.', 'dw_notes'),
+	        'public' => true,
+	        'hierarchical' => true, // make it hierarchical (like categories)
+	        'show_ui' => true,
+	        'show_in_quick_edit' => true,
+	        'show_admin_column' => true,
+	        'query_var' => true,
             'rewrite' => ['slug' => 'pad'],
         ];
-        \register_taxonomy('pad', ['post'], $args);
 
+        \register_taxonomy('pad', ['dw_notes'], $args);
+    }
+
+    public function add_custom_post_type()
+    {
         // notes custom type
-        $labels = array(
+        $labels = [
             'name' => __('Notes', 'dw_notes'),
             'singular_name' => __('Notes', 'dw_notes'),
             'menu_name' => __('Notes', 'dw_notes'),
@@ -52,9 +66,9 @@ class NotesPostType extends NotesBaseController
             'parent_item_colon' => __('Parent notes:', 'dw_notes'),
             'not_found' => __('No notes found.', 'dw_notes'),
             'not_found_in_trash' => __('No notes found in Trash.', 'dw_notes'),
-        );
+        ];
 
-        $args = array(
+        $args = [
             'labels' => $labels,
             'description' => __('A custom post type for notes.', 'dw_notes'),
             'public' => true,
@@ -62,14 +76,14 @@ class NotesPostType extends NotesBaseController
             'show_ui' => true,
             'show_in_menu' => true,
             'query_var' => true,
-            'rewrite' => array('slug' => 'dw-notes'),
+            'rewrite' => ['slug' => 'dw-notes'],
             'capability_type' => 'post',
             'has_archive' => true,
             'hierarchical' => false,
             'menu_position' => 20,
-            'supports' => array('title', 'editor', 'author', 'thumbnail'),
-            'taxonomies' => array('pad', 'post_tag'),
-        );
+            'supports' => ['title', 'editor', 'author', 'thumbnail'],
+            'taxonomies' => ['pad', 'post_tag'],
+        ];
 
         \register_post_type('dw_notes', $args);
     }

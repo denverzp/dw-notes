@@ -2,7 +2,7 @@
 
 namespace DWNotes\Admin;
 
-use DWNotes\App\Engine\NotesBaseController;
+use DWNotes\App\Engine\BaseController;
 
 /**
  * The admin-specific functionality of the plugin.
@@ -15,7 +15,7 @@ use DWNotes\App\Engine\NotesBaseController;
  *
  * @author     ditsweb <dits.web.2017@gmail.com>
  */
-class NotesAdmin extends NotesBaseController
+class NotesAdmin extends BaseController
 {
     /**
      * Register the stylesheets for the admin area.
@@ -35,13 +35,5 @@ class NotesAdmin extends NotesBaseController
     public function enqueue_scripts()
     {
         \wp_enqueue_script($this->plugin_name, DW_NOTES_URL.'admin/js/dw-notes-admin.js', ['jquery'], $this->version, false);
-    }
-
-    public function change_notes_column()
-    {
-    }
-
-    public function fill_notes_column()
-    {
     }
 }

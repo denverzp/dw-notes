@@ -3,9 +3,10 @@
 namespace DWNotes\App\Engine;
 
 /**
- * Class NotesRegistry.
+ * Class Registry
+ * @package DWNotes\App\Engine
  */
-class NotesRegistry
+class Registry
 {
 	/**
 	 * @var array

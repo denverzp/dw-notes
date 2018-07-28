@@ -2,17 +2,17 @@
 
 namespace DWNotes\App\Controller;
 
-use DWNotes\App\Engine\NotesBaseController;
+use DWNotes\App\Engine\BaseController;
 
 /**
  * Class NotesActivator
- * @package DWNotes\App
+ * @package DWNotes\App\Controller
  */
-class NotesActivator extends NotesBaseController
+class NotesActivator extends BaseController
 {
     public function handle()
     {
-        (new NotesPostType($this->registry))->init();
+        (new NotesCustom($this->registry))->init();
         flush_rewrite_rules();
     }
 }

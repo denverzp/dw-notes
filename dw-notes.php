@@ -38,14 +38,15 @@ define('DW_NOTES_DIR', __DIR__.'/src/');
 define('DW_NOTES_URL', plugin_dir_url(__FILE__).'/src/');
 
 // use
-use \DWNotes\App\Engine\NotesRegistry;
-use \DWNotes\App\Controller\NotesActivator;
-use \DWNotes\App\Controller\NotesDeactivator;
-use \DWNotes\App\Controller\Notes;
+use DWNotes\App\Engine\Registry;
+use DWNotes\App\Controller\NotesActivator;
+use DWNotes\App\Controller\NotesDeactivator;
+use DWNotes\App\Controller\Notes;
 
 // NotesRegistry
-$registry = new NotesRegistry();
+$registry = new Registry();
 
+// WP DB
 $registry->set('db', $wpdb);
 
 /**
@@ -67,7 +68,7 @@ function deactivate_dw_notes()
 {
     global $registry;
 
-	(new NotesDeactivator($registry))->handle();
+    (new NotesDeactivator($registry))->handle();
 }
 
 \register_activation_hook(DW_NOTES_APP, 'activate_dw_notes');

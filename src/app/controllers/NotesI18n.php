@@ -2,13 +2,13 @@
 
 namespace DWNotes\App\Controller;
 
-use DWNotes\App\Engine\NotesBaseController;
+use DWNotes\App\Engine\BaseController;
 
 /**
  * Class NotesI18n
  * @package DWNotes\App
  */
-class NotesI18n extends NotesBaseController
+class NotesI18n extends BaseController
 {
 	/**
 	 *

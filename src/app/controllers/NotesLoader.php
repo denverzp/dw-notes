@@ -2,16 +2,16 @@
 
 namespace DWNotes\App\Controller;
 
-use DWNotes\App\Engine\NotesBaseController;
+use DWNotes\App\Engine\BaseController;
 
 /**
  * Class NotesLoader
- * @package DWNotes\App
+ * @package DWNotes\App\Controller
  *
- * @property $actions
- * @property $filters
+ * @property array $actions
+ * @property array $filters
  */
-class NotesLoader extends NotesBaseController
+class NotesLoader extends BaseController
 {
     /**
      * The array of actions registered with WordPress.
@@ -87,8 +87,6 @@ class NotesLoader extends NotesBaseController
 
     /**
      * Register the filters and actions with WordPress.
-     *
-     * @since    1.0.0
      */
     public function run()
     {

@@ -2,12 +2,12 @@
 
 namespace DWNotes\Frontend;
 
-use DWNotes\App\Engine\NotesBaseController;
+use DWNotes\App\Engine\BaseController;
 
 /**
  * Class NotesFrontend.
  */
-class NotesFrontend extends NotesBaseController
+class NotesFrontend extends BaseController
 {
     /**
      * Register the stylesheets for the public-facing side of the site.
