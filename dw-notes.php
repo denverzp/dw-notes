@@ -37,13 +37,26 @@ define('DW_NOTES_APP', __FILE__);
 define('DW_NOTES_DIR', __DIR__.'/src/');
 define('DW_NOTES_URL', plugin_dir_url(__FILE__).'/src/');
 
+// use
+use \DWNotes\App\Engine\NotesRegistry;
+use \DWNotes\App\Controller\NotesActivator;
+use \DWNotes\App\Controller\NotesDeactivator;
+use \DWNotes\App\Controller\Notes;
+
+// NotesRegistry
+$registry = new NotesRegistry();
+
+$registry->set('db', $wpdb);
+
 /**
  * The code that runs during plugin activation.
  * This action is documented in includes/class-NotesActivator.php.
  */
 function activate_dw_notes()
 {
-    \DWNotes\Classes\NotesActivator::activate();
+    global $registry;
+
+    (new NotesActivator($registry))->handle();
 }
 
 /**
@@ -52,8 +65,9 @@ function activate_dw_notes()
  */
 function deactivate_dw_notes()
 {
-    require_once DW_NOTES_DIR.'classes/NotesDeactivator.php';
-    \DWNotes\Classes\NotesDeactivator::deactivate();
+    global $registry;
+
+	(new NotesDeactivator($registry))->handle();
 }
 
 \register_activation_hook(DW_NOTES_APP, 'activate_dw_notes');
@@ -70,14 +84,9 @@ function deactivate_dw_notes()
  */
 function run_dw_notes()
 {
-	global $wpdb;
+    global $registry;
 
-	// NotesRegistry
-	$registry = new \DWNotes\Classes\NotesRegistry();
-
-	$registry->set('db', $wpdb);
-
-    $plugin = new \DWNotes\Classes\Notes($registry);
+    $plugin = new Notes($registry);
     $plugin->run();
 }
 

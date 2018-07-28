@@ -1,6 +1,6 @@
 <?php
 
-namespace DWNotes\Classes;
+namespace DWNotes\App\Engine;
 
 /**
  * Class NotesRegistry.

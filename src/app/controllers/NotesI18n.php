@@ -1,18 +1,18 @@
 <?php
 
-namespace DWNotes\Classes;
+namespace DWNotes\App\Controller;
+
+use DWNotes\App\Engine\NotesBaseController;
 
 /**
  * Class NotesI18n
- * @package DW\Classes
+ * @package DWNotes\App
  */
 class NotesI18n extends NotesBaseController
 {
-    /**
-     * Load the plugin text domain for translation.
-     *
-     * @since    1.0.0
-     */
+	/**
+	 *
+	 */
     public function load_plugin_textdomain()
     {
         \load_plugin_textdomain(

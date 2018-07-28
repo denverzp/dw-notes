@@ -1,51 +1,29 @@
 <?php
 
-namespace DWNotes\Classes;
+namespace DWNotes\App\Controller;
+
+use DWNotes\App\Engine\NotesBaseController;
 
 /**
- * Register all actions and filters for the plugin.
+ * Class NotesLoader
+ * @package DWNotes\App
  *
- * @see       ditsweb.com
- * @since      1.0.0
- *
- * Maintain a list of all hooks that are registered throughout
- * the plugin, and register them with the WordPress API. Call the
- * run function to execute the list of actions and filters.
- *
- * @author     ditsweb <dits.web.2017@gmail.com>
+ * @property $actions
+ * @property $filters
  */
 class NotesLoader extends NotesBaseController
 {
     /**
      * The array of actions registered with WordPress.
-     *
-     * @since    1.0.0
-     *
      * @var array the actions registered with WordPress to fire when the plugin loads
      */
-    protected $actions;
+    protected $actions = [];
 
     /**
      * The array of filters registered with WordPress.
-     *
-     * @since    1.0.0
-     *
      * @var array the filters registered with WordPress to fire when the plugin loads
      */
-    protected $filters;
-
-    /**
-     * Initialize the collections used to maintain the actions and filters.
-     *
-     * @since    1.0.0
-     */
-    public function __construct($registry)
-    {
-    	parent::__construct($registry);
-
-        $this->actions = [];
-        $this->filters = [];
-    }
+    protected $filters = [];
 
     /**
      * Add a new action to the collection to be registered with WordPress.

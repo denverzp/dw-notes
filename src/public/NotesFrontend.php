@@ -2,7 +2,7 @@
 
 namespace DWNotes\Frontend;
 
-use DWNotes\Classes\NotesBaseController;
+use DWNotes\App\Engine\NotesBaseController;
 
 /**
  * Class NotesFrontend.

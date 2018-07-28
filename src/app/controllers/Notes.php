@@ -1,7 +1,10 @@
 <?php
 
-namespace DWNotes\Classes;
+namespace DWNotes\App\Controller;
 
+
+use DWNotes\App\Engine\NotesBaseController;
+use DWNotes\App\Engine\NotesRegistry;
 use DWNotes\Admin\NotesAdmin;
 use DWNotes\Frontend\NotesFrontend;
 
@@ -10,12 +13,11 @@ use DWNotes\Frontend\NotesFrontend;
  */
 class Notes extends NotesBaseController
 {
-    /**
-     * Notes constructor.
-     *
-     * @param $registry
-     */
-    public function __construct($registry)
+	/**
+	 * Notes constructor.
+	 * @param NotesRegistry $registry
+	 */
+    public function __construct(NotesRegistry $registry)
     {
         parent::__construct($registry);
 
@@ -35,24 +37,9 @@ class Notes extends NotesBaseController
         $this->define_public_hooks();
     }
 
-    /**
-     * Load the required dependencies for this plugin.
-     *
-     * Include the following files that make up the plugin:
-     *
-     * - Dw_Notes_Loader. Orchestrates the hooks of the plugin.
-     * - Dw_Notes_i18n. Defines internationalization functionality.
-     * - Dw_Notes_Admin. Defines all hooks for the admin area.
-     * - Dw_Notes_Public. Defines all hooks for the public side of the site.
-     *
-     * Create an instance of the loader which will be used to register the hooks
-     * with WordPress.
-     *
-     * @since    1.0.0
-     */
     private function load_dependencies()
     {
-        $this->registry->set('notes_type', new NotesPostType());
+        $this->registry->set('notes_type', new NotesPostType($this->registry));
 
         $this->registry->set('plugin_i18n', new NotesI18n($this->registry));
 
@@ -63,93 +50,52 @@ class Notes extends NotesBaseController
         $this->registry->set('loader', new NotesLoader($this->registry));
     }
 
-	/**
-	 * Add custom types
-	 */
     private function custom_types()
     {
         $this->loader->add_action('init', $this->notes_type, 'init');
     }
 
-    /**
-     * Define the locale for this plugin for internationalization.
-     *
-     * Uses the Dw_Notes_i18n class in order to set the domain and to register the hook
-     * with WordPress.
-     *
-     * @since    1.0.0
-     */
     private function set_locale()
     {
         $this->loader->add_action('plugins_loaded', $this->plugin_i18n, 'load_plugin_textdomain');
     }
 
-    /**
-     * Register all of the hooks related to the admin area functionality
-     * of the plugin.
-     *
-     * @since    1.0.0
-     */
     private function define_admin_hooks()
     {
         $this->loader->add_action('admin_enqueue_scripts', $this->plugin_admin, 'enqueue_styles');
         $this->loader->add_action('admin_enqueue_scripts', $this->plugin_admin, 'enqueue_scripts');
     }
 
-    /**
-     * Register all of the hooks related to the public-facing functionality
-     * of the plugin.
-     *
-     * @since    1.0.0
-     */
     private function define_public_hooks()
     {
         $this->loader->add_action('wp_enqueue_scripts', $this->plugin_frontend, 'enqueue_styles');
         $this->loader->add_action('wp_enqueue_scripts', $this->plugin_frontend, 'enqueue_scripts');
     }
 
-    /**
-     * Run the loader to execute all of the hooks with WordPress.
-     *
-     * @since    1.0.0
-     */
     public function run()
     {
         $this->loader->run();
     }
 
-    /**
-     * The name of the plugin used to uniquely identify it within the context of
-     * WordPress and to define internationalization functionality.
-     *
-     * @since     1.0.0
-     *
-     * @return string the name of the plugin
-     */
+	/**
+	 * @return mixed
+	 */
     public function get_plugin_name()
     {
         return $this->plugin_name;
     }
 
-    /**
-     * The reference to the class that orchestrates the hooks with the plugin.
-     *
-     * @since     1.0.0
-     *
-     * @return \DWNotes\Classes\NotesLoader orchestrates the hooks of the plugin
-     */
+	/**
+	 * @return NotesLoader
+	 */
     public function get_loader()
     {
         return $this->loader;
     }
 
-    /**
-     * Retrieve the version number of the plugin.
-     *
-     * @since     1.0.0
-     *
-     * @return string the version number of the plugin
-     */
+	/**
+	 * @return mixed
+	 */
     public function get_version()
     {
         return $this->version;

@@ -1,11 +1,42 @@
 <?php
 
-namespace DWNotes\Classes;
+namespace DWNotes\App\Controller;
 
-class NotesPostType
+use DWNotes\App\Engine\NotesBaseController;
+
+/**
+ * Class NotesPostType
+ * @package DWNotes\App
+ */
+class NotesPostType extends NotesBaseController
 {
     public function init()
     {
+        //pad taxonomy
+        $labels = [
+            'name' => _x('Pads', 'taxonomy general name'),
+            'singular_name' => _x('Pad', 'taxonomy singular name'),
+            'search_items' => __('Search Pads'),
+            'all_items' => __('All Pads'),
+            'parent_item' => __('Parent Pad'),
+            'parent_item_colon' => __('Parent Pad:'),
+            'edit_item' => __('Edit Pad'),
+            'update_item' => __('Update Pad'),
+            'add_new_item' => __('Add New Pad'),
+            'new_item_name' => __('New Pad Name'),
+            'menu_name' => __('Pads'),
+        ];
+        $args = [
+            'hierarchical' => true, // make it hierarchical (like categories)
+            'labels' => $labels,
+            'show_ui' => true,
+            'show_admin_column' => true,
+            'query_var' => true,
+            'rewrite' => ['slug' => 'pad'],
+        ];
+        \register_taxonomy('pad', ['post'], $args);
+
+        // notes custom type
         $labels = array(
             'name' => __('Notes', 'dw_notes'),
             'singular_name' => __('Notes', 'dw_notes'),
@@ -37,7 +68,7 @@ class NotesPostType
             'hierarchical' => false,
             'menu_position' => 20,
             'supports' => array('title', 'editor', 'author', 'thumbnail'),
-            'taxonomies' => array('category', 'post_tag'),
+            'taxonomies' => array('pad', 'post_tag'),
         );
 
         \register_post_type('dw_notes', $args);
