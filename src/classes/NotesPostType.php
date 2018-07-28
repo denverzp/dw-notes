@@ -1,8 +1,8 @@
 <?php
 
-namespace DW\Classes;
+namespace DWNotes\Classes;
 
-class NotesPostType extends NotesBaseController
+class NotesPostType
 {
     public function init()
     {
@@ -31,7 +31,7 @@ class NotesPostType extends NotesBaseController
             'show_ui' => true,
             'show_in_menu' => true,
             'query_var' => true,
-            'rewrite' => array('slug' => 'dw_notes'),
+            'rewrite' => array('slug' => 'dw-notes'),
             'capability_type' => 'post',
             'has_archive' => true,
             'hierarchical' => false,

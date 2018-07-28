@@ -1,9 +1,9 @@
 <?php
 
-namespace DW\Classes;
+namespace DWNotes\Classes;
 
-use DW\Admin\NotesAdmin;
-use DW\Frontend\NotesFrontend;
+use DWNotes\Admin\NotesAdmin;
+use DWNotes\Frontend\NotesFrontend;
 
 /**
  * Class Notes.
@@ -52,7 +52,7 @@ class Notes extends NotesBaseController
      */
     private function load_dependencies()
     {
-        $this->registry->set('notes_type', new NotesPostType($this->registry));
+        $this->registry->set('notes_type', new NotesPostType());
 
         $this->registry->set('plugin_i18n', new NotesI18n($this->registry));
 
@@ -63,6 +63,9 @@ class Notes extends NotesBaseController
         $this->registry->set('loader', new NotesLoader($this->registry));
     }
 
+	/**
+	 * Add custom types
+	 */
     private function custom_types()
     {
         $this->loader->add_action('init', $this->notes_type, 'init');
@@ -133,7 +136,7 @@ class Notes extends NotesBaseController
      *
      * @since     1.0.0
      *
-     * @return \Dw\Classes\NotesLoader orchestrates the hooks of the plugin
+     * @return \DWNotes\Classes\NotesLoader orchestrates the hooks of the plugin
      */
     public function get_loader()
     {

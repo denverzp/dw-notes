@@ -43,7 +43,7 @@ define('DW_NOTES_URL', plugin_dir_url(__FILE__).'/src/');
  */
 function activate_dw_notes()
 {
-    \DW\Classes\NotesActivator::activate();
+    \DWNotes\Classes\NotesActivator::activate();
 }
 
 /**
@@ -53,7 +53,7 @@ function activate_dw_notes()
 function deactivate_dw_notes()
 {
     require_once DW_NOTES_DIR.'classes/NotesDeactivator.php';
-    \DW\Classes\NotesDeactivator::deactivate();
+    \DWNotes\Classes\NotesDeactivator::deactivate();
 }
 
 \register_activation_hook(DW_NOTES_APP, 'activate_dw_notes');
@@ -70,10 +70,14 @@ function deactivate_dw_notes()
  */
 function run_dw_notes()
 {
-	// NotesRegistry
-	$registry = new \DW\Classes\NotesRegistry();
+	global $wpdb;
 
-    $plugin = new \DW\Classes\Notes($registry);
+	// NotesRegistry
+	$registry = new \DWNotes\Classes\NotesRegistry();
+
+	$registry->set('db', $wpdb);
+
+    $plugin = new \DWNotes\Classes\Notes($registry);
     $plugin->run();
 }
 

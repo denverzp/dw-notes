@@ -1,6 +1,6 @@
 <?php
 
-namespace DW\Classes;
+namespace DWNotes\Classes;
 
 /**
  * Class NotesI18n

@@ -1,36 +1,40 @@
 <?php
 
-namespace DW\Classes;
+namespace DWNotes\Classes;
 
 /**
- * Class NotesBaseController
- * @package DW\Classes
+ * Class NotesBaseController.
  *
  * @property $version
  * @property $plugin_name
- * @property \DW\Classes\NotesLoader $loader
- * @property \DW\Classes\NotesRegistry $registry
+ * @property \wpdb $db
+ * @property \DWNotes\Classes\NotesLoader   $loader
+ * @property \DWNotes\Classes\NotesRegistry $registry
  */
-class NotesBaseController {
+class NotesBaseController
+{
+    /**
+     * @var \DWNotes\Classes\NotesRegistry
+     */
+    protected $registry;
 
-	/**
-	 * @var \DW\Classes\NotesRegistry
-	 */
-	protected $registry;
+    public function __construct($registry)
+    {
+        $this->registry = $registry;
+    }
 
-	public function __construct($registry) {
-		$this->registry = $registry;
-	}
+    public function __get($key)
+    {
+        return $this->registry->get($key);
+    }
 
-	public function __get($key) {
-		return $this->registry->get($key);
-	}
+    public function __set($key, $value)
+    {
+        $this->registry->set($key, $value);
+    }
 
-	public function __set($key, $value) {
-		$this->registry->set($key, $value);
-	}
-
-	public function __isset($key) {
-		return $this->registry->has($key);
-	}
+    public function __isset($key)
+    {
+        return $this->registry->has($key);
+    }
 }
