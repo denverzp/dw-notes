@@ -73,8 +73,8 @@ class NotesCustom extends BaseController
         $args = [
             'labels' => $labels,
             'description' => __('A custom post type for notes.', 'dw_notes'),
-            'public' => true,
-            'publicly_queryable' => true,
+            'public' => false,
+            'publicly_queryable' => false,
             'show_ui' => true,
             'show_in_menu' => true,
             'query_var' => true,

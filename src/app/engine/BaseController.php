@@ -15,6 +15,8 @@ namespace DWNotes\App\Engine;
  * @property \DWNotes\Admin\NotesAdmin           $plugin_admin
  * @property \DWNotes\Admin\NotesAdminWidgetLatest  $plugin_admin_widget_lates
  * @property \DWNotes\Frontend\NotesFrontend     $plugin_frontend
+ * @property \DWNotes\Frontend\NotesFrontendShortcodes     $plugin_frontend_shortcodes
+ * @property \DWNotes\Frontend\NotesFrontendPageTemplate     $plugin_frontend_page_template
  */
 class BaseController
 {

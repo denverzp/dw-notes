@@ -2,8 +2,8 @@
 
 namespace DWNotes\Admin;
 
-use DWNotes\App\Engine\View;
 use DWNotes\App\Engine\BaseController;
+use function DWNotes\App\Engine\view;
 
 /**
  * Class NotesAdminWidgetLatest.
@@ -27,8 +27,6 @@ class NotesAdminWidgetLatest extends BaseController
             'post_status' => 'draft, publish, future, pending, private',
         ]);
 
-        $view = new View('admin/templates/dw-notes-admin-widget-latest.tmpl');
-
-        echo $view->render(compact('latest_notes'));
+	    echo view('admin/templates/dw-notes-dashboard-widget-latest.tmpl', \compact('latest_notes'));
     }
 }

@@ -7,6 +7,8 @@ use DWNotes\App\Engine\Registry;
 use DWNotes\Admin\NotesAdmin;
 use DWNotes\Admin\NotesAdminWidgetLatest;
 use DWNotes\Frontend\NotesFrontend;
+use DWNotes\Frontend\NotesFrontendShortcodes;
+use DWNotes\Frontend\NotesFrontendPageTemplate;
 
 /**
  * Class Notes.
@@ -51,6 +53,10 @@ class Notes extends BaseController
         $this->registry->set('plugin_admin_widget_lates', new NotesAdminWidgetLatest($this->registry));
 
         $this->registry->set('plugin_frontend', new NotesFrontend($this->registry));
+
+        $this->registry->set('plugin_frontend_shortcodes', new NotesFrontendShortcodes($this->registry));
+
+        $this->registry->set('plugin_frontend_page_template', new NotesFrontendPageTemplate($this->registry));
     }
 
     private function custom_types()
@@ -73,10 +79,16 @@ class Notes extends BaseController
 
     private function define_public_hooks()
     {
+    	// shortcodes
+        $this->loader->add_shortcode('notes', $this->plugin_frontend_shortcodes, 'notes_shortcode');
+
+        // custom template
+	    $this->loader->add_filter('template_include', $this->plugin_frontend_page_template, 'notes_page_template', 99);
+
         /*
-         * REST Basic Auth
-         * @source https://github.com/WP-API/Basic-Auth
-         */
+		 * REST Basic Auth
+		 * @source https://github.com/WP-API/Basic-Auth
+		 */
         $this->loader->add_filter('determine_current_user', $this->plugin_frontend, 'json_basic_auth_handler');
         $this->loader->add_filter('rest_authentication_errors', $this->plugin_frontend, 'json_basic_auth_error');
 

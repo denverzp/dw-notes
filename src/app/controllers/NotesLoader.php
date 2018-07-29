@@ -10,6 +10,7 @@ use DWNotes\App\Engine\BaseController;
  *
  * @property array $actions
  * @property array $filters
+ * @property array $shortcodes
  */
 class NotesLoader extends BaseController
 {
@@ -24,6 +25,12 @@ class NotesLoader extends BaseController
      * @var array the filters registered with WordPress to fire when the plugin loads
      */
     protected $filters = [];
+
+    /**
+     * The array of shortcodes registered with WordPress.
+     * @var array the shortcodes registered with WordPress to fire when the plugin loads
+     */
+    protected $shortcodes = [];
 
     /**
      * Add a new action to the collection to be registered with WordPress.
@@ -55,6 +62,20 @@ class NotesLoader extends BaseController
     public function add_filter($hook, $component, $callback, $priority = 10, $accepted_args = 1)
     {
         $this->filters = $this->add($this->filters, $hook, $component, $callback, $priority, $accepted_args);
+    }
+
+    /**
+     * Add a new shortcode to the collection to be registered with WordPress.
+     *
+     * @since    1.0.0
+     *
+     * @param string $name          the name of the WordPress shortcode that is being registered
+     * @param object $component     a reference to the instance of the object on which the filter is defined
+     * @param string $callback      the name of the function definition on the $component
+     */
+    public function add_shortcode($name, $component, $callback)
+    {
+        $this->shortcodes = $this->add($this->shortcodes, $name, $component, $callback, null, null);
     }
 
     /**
@@ -96,6 +117,10 @@ class NotesLoader extends BaseController
 
         foreach ($this->actions as $hook) {
             \add_action($hook['hook'], array($hook['component'], $hook['callback']), $hook['priority'], $hook['accepted_args']);
+        }
+
+        foreach ($this->shortcodes as $hook) {
+            \add_shortcode($hook['hook'], array($hook['component'], $hook['callback']));
         }
     }
 }

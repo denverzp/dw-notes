@@ -12,7 +12,10 @@
   "autoload": {
     "psr-4": {
       "DWNotes\\": "src/"
-    }
+    },
+    "files": [
+      "src/app/engine/helpers.php"
+    ]
   },
     "require": {}
 }
