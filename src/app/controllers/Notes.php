@@ -2,7 +2,6 @@
 
 namespace DWNotes\App\Controller;
 
-
 use DWNotes\App\Engine\BaseController;
 use DWNotes\App\Engine\Registry;
 use DWNotes\Admin\NotesAdmin;
@@ -10,15 +9,15 @@ use DWNotes\Admin\NotesAdminWidgetLatest;
 use DWNotes\Frontend\NotesFrontend;
 
 /**
- * Class Notes
- * @package DWNotes\App\Controller
+ * Class Notes.
  */
 class Notes extends BaseController
 {
-	/**
-	 * Notes constructor.
-	 * @param Registry $registry
-	 */
+    /**
+     * Notes constructor.
+     *
+     * @param Registry $registry
+     */
     public function __construct(Registry $registry)
     {
         parent::__construct($registry);
@@ -43,7 +42,7 @@ class Notes extends BaseController
     {
         $this->registry->set('notes_type', new NotesCustom($this->registry));
 
-	    $this->registry->set('loader', new NotesLoader($this->registry));
+        $this->registry->set('loader', new NotesLoader($this->registry));
 
         $this->registry->set('plugin_i18n', new NotesI18n($this->registry));
 
@@ -74,6 +73,13 @@ class Notes extends BaseController
 
     private function define_public_hooks()
     {
+        /*
+         * REST Basic Auth
+         * @source https://github.com/WP-API/Basic-Auth
+         */
+        $this->loader->add_filter('determine_current_user', $this->plugin_frontend, 'json_basic_auth_handler');
+        $this->loader->add_filter('rest_authentication_errors', $this->plugin_frontend, 'json_basic_auth_error');
+
         $this->loader->add_action('wp_enqueue_scripts', $this->plugin_frontend, 'enqueue_styles');
         $this->loader->add_action('wp_enqueue_scripts', $this->plugin_frontend, 'enqueue_scripts');
     }
@@ -83,25 +89,25 @@ class Notes extends BaseController
         $this->loader->run();
     }
 
-	/**
-	 * @return string
-	 */
+    /**
+     * @return string
+     */
     public function get_plugin_name()
     {
         return $this->plugin_name;
     }
 
-	/**
-	 * @return NotesLoader
-	 */
+    /**
+     * @return NotesLoader
+     */
     public function get_loader()
     {
         return $this->loader;
     }
 
-	/**
-	 * @return string
-	 */
+    /**
+     * @return string
+     */
     public function get_version()
     {
         return $this->version;

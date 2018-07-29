@@ -43,19 +43,18 @@ use DWNotes\App\Controller\NotesActivator;
 use DWNotes\App\Controller\NotesDeactivator;
 use DWNotes\App\Controller\Notes;
 
-// NotesRegistry
-$registry = new Registry();
-
-// WP DB
-$registry->set('db', $wpdb);
-
 /**
  * The code that runs during plugin activation.
  * This action is documented in includes/class-NotesActivator.php.
  */
 function activate_dw_notes()
 {
-    global $registry;
+    // NotesRegistry
+    $registry = new Registry();
+
+    // WP DB
+    global $wpdb;
+    $registry->set('db', $wpdb);
 
     (new NotesActivator($registry))->handle();
 }
@@ -66,7 +65,12 @@ function activate_dw_notes()
  */
 function deactivate_dw_notes()
 {
-    global $registry;
+    // NotesRegistry
+    $registry = new Registry();
+
+    // WP DB
+    global $wpdb;
+    $registry->set('db', $wpdb);
 
     (new NotesDeactivator($registry))->handle();
 }
@@ -85,7 +89,12 @@ function deactivate_dw_notes()
  */
 function run_dw_notes()
 {
-    global $registry;
+    // NotesRegistry
+    $registry = new Registry();
+
+    // WP DB
+    global $wpdb;
+    $registry->set('db', $wpdb);
 
     $plugin = new Notes($registry);
     $plugin->run();

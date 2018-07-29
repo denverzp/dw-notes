@@ -41,6 +41,8 @@ class NotesCustom extends BaseController
 	        'show_ui' => true,
 	        'show_in_quick_edit' => true,
 	        'show_admin_column' => true,
+	        'show_in_rest' => true,
+	        'rest_base' => 'pads',
 	        'query_var' => true,
             'rewrite' => ['slug' => 'pad'],
         ];
@@ -78,6 +80,8 @@ class NotesCustom extends BaseController
             'query_var' => true,
             'rewrite' => ['slug' => 'dw-notes'],
             'capability_type' => 'post',
+            'show_in_rest' => true,
+            'rest_base' => 'dw-notes',
             'has_archive' => true,
             'hierarchical' => false,
             'menu_position' => 20,
