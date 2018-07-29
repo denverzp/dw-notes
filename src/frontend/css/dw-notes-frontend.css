@@ -1,0 +1,46 @@
+.notes__block {
+  display: flex;
+  flex-direction: row;
+  justify-content: stretch;
+  align-content: stretch;
+  width: 100%;
+  min-height: 300px; }
+
+#notes__column {
+  flex: 1 0 20%;
+  position: relative;
+  height: 750px;
+  border-right: 1px solid rgba(60, 60, 60, 0.5); }
+  #notes__column .notes__list {
+    display: block;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0; }
+  #notes__column ul {
+    position: absolute;
+    display: block;
+    list-style: none;
+    overflow-x: hidden;
+    overflow-y: auto;
+    height: 100%;
+    width: 100%;
+    padding: 0 1rem 0 0; }
+  #notes__column .notes__item {
+    display: block;
+    float: left;
+    list-style: none;
+    min-height: 150px;
+    width: 100%;
+    border: 1px solid rgba(160, 160, 160, 0.3);
+    margin-bottom: 0.5rem;
+    text-overflow: ellipsis;
+    padding: 0.25rem; }
+
+#notes__content {
+  flex: 1 0 80%; }
+  #notes__content .notes__item-content {
+    padding: 0.5rem; }
+
+/*# sourceMappingURL=dw-notes-frontend.css.map */

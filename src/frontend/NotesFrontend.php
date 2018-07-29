@@ -18,7 +18,7 @@ class NotesFrontend extends BaseController
      */
     public function enqueue_styles()
     {
-        \wp_enqueue_style($this->plugin_name, DW_NOTES_URL.'frontend/css/dw-notes-public.css', [], $this->version, 'all');
+        \wp_enqueue_style($this->plugin_name, DW_NOTES_URL.'frontend/css/dw-notes-frontend.css', [], $this->version, 'all');
     }
 
     /**
@@ -28,8 +28,8 @@ class NotesFrontend extends BaseController
      */
     public function enqueue_scripts()
     {
-        \wp_enqueue_script('dw_notes_jsrender', DW_NOTES_URL.'frontend/js/jsrender.min.js', [], $this->version, false);
-        \wp_enqueue_script($this->plugin_name, DW_NOTES_URL.'frontend/js/dw-notes-frontend.js', ['jquery'], $this->version, false);
+        \wp_enqueue_script('dw_notes_jsrender', DW_NOTES_URL.'frontend/js/jsrender.min.js', ['jquery'], $this->version, true);
+        \wp_enqueue_script($this->plugin_name, DW_NOTES_URL.'frontend/js/dw-notes-frontend.js', ['jquery'], $this->version, true);
 
 	    $ajax_data = null;
 

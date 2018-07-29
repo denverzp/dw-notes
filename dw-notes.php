@@ -35,7 +35,7 @@ require __DIR__.'/vendor/autoload.php';
 define('DW_NOTES_VERSION', '1.0.0');
 define('DW_NOTES_APP', __FILE__);
 define('DW_NOTES_DIR', __DIR__.'/src/');
-define('DW_NOTES_URL', plugin_dir_url(__FILE__).'/src/');
+define('DW_NOTES_URL', plugin_dir_url(__FILE__).'src/');
 
 // use
 use DWNotes\App\Engine\Registry;

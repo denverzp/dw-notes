@@ -1,2 +1,26 @@
-some notes data...
-
+<div class="notes__block">
+    <div id="notes__column"></div>
+    <div id="notes__content"></div>
+</div>
+<script id="notesList" type="text/x-jsrender">
+<div class="notes__list">
+    {{if notes.length}}
+    <ul>
+    {{for notes}}
+    <li class="notes__item" data-id="{{:id}}">
+        <h4>{{:title.rendered}}</h4>
+        <p>{{:~limitText(content.rendered)}}</p>
+    </li>
+    {{/for}}
+    </ul>
+    {{/if}}
+</div>
+</script>
+<script id="notesItemContent" type="text/x-jsrender">
+{{if note}}
+<div class="notes__item-content" data-id="{{:id}}">
+    <h2>{{:note.title.rendered}}</h4>
+    <p>{{:note.content.rendered}}</p>
+</div>
+{{/if}}
+</script>
