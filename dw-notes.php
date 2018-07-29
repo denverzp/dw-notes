@@ -43,42 +43,48 @@ use DWNotes\App\Controller\NotesActivator;
 use DWNotes\App\Controller\NotesDeactivator;
 use DWNotes\App\Controller\Notes;
 
-/**
+if (!function_exists('init_dw_notes')) {
+    function init_dw_notes()
+    {
+        global $wpdb, $registry;
+
+        // NotesRegistry
+        $registry = new Registry();
+
+        $registry->set('db', $wpdb);
+    }
+}
+
+/*
  * The code that runs during plugin activation.
  * This action is documented in includes/class-NotesActivator.php.
  */
-function activate_dw_notes()
-{
-    // NotesRegistry
-    $registry = new Registry();
+if (!function_exists('activate_dw_notes')) {
+    function activate_dw_notes()
+    {
+        global $registry;
 
-    // WP DB
-    global $wpdb;
-    $registry->set('db', $wpdb);
-
-    (new NotesActivator($registry))->handle();
+        (new NotesActivator($registry))->handle();
+    }
 }
 
-/**
+/*
  * The code that runs during plugin deactivation.
  * This action is documented in includes/class-NotesDeactivator.php.
  */
-function deactivate_dw_notes()
-{
-    // NotesRegistry
-    $registry = new Registry();
+if (!function_exists('deactivate_dw_notes')) {
+    function deactivate_dw_notes()
+    {
+        global $registry;
 
-    // WP DB
-    global $wpdb;
-    $registry->set('db', $wpdb);
-
-    (new NotesDeactivator($registry))->handle();
+        (new NotesDeactivator($registry))->handle();
+    }
 }
 
 \register_activation_hook(DW_NOTES_APP, 'activate_dw_notes');
 \register_deactivation_hook(DW_NOTES_APP, 'deactivate_dw_notes');
 
-/**
+/*
  * Begins execution of the plugin.
  *
  * Since everything within the plugin is registered via hooks,
@@ -87,17 +93,16 @@ function deactivate_dw_notes()
  *
  * @since    1.0.0
  */
-function run_dw_notes()
-{
-    // NotesRegistry
-    $registry = new Registry();
+if (!function_exists('run_dw_notes')) {
+    function run_dw_notes()
+    {
+        global $registry;
 
-    // WP DB
-    global $wpdb;
-    $registry->set('db', $wpdb);
-
-    $plugin = new Notes($registry);
-    $plugin->run();
+        $plugin = new Notes($registry);
+        $plugin->run();
+    }
 }
+
+init_dw_notes();
 
 run_dw_notes();
