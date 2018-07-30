@@ -4,6 +4,7 @@ namespace DWNotes\Frontend;
 
 use DWNotes\App\Engine\BaseController;
 use DWNotes\App\Models\User;
+use function DWNotes\App\Engine\view;
 
 /**
  * Class NotesFrontend
@@ -11,98 +12,121 @@ use DWNotes\App\Models\User;
  */
 class NotesFrontend extends BaseController
 {
-    /**
-     * Register the stylesheets for the public-facing side of the site.
-     *
-     * @since    1.0.0
-     */
-    public function enqueue_styles()
-    {
-        \wp_enqueue_style($this->plugin_name, DW_NOTES_URL.'frontend/css/dw-notes-frontend.css', [], $this->version, 'all');
-    }
+	/**
+	 * Register the stylesheets for the public-facing side of the site.
+	 *
+	 * @since    1.0.0
+	 */
+	public function enqueue_styles()
+	{
+		\wp_enqueue_style($this->plugin_name, DW_NOTES_URL . 'frontend/css/dw-notes-frontend.css', [], $this->version, 'all');
+	}
 
-    /**
-     * Register the JavaScript for the public-facing side of the site.
-     *
-     * @since    1.0.0
-     */
-    public function enqueue_scripts()
-    {
-        \wp_enqueue_script('dw_notes_jsrender', DW_NOTES_URL.'frontend/js/jsrender.min.js', ['jquery'], $this->version, true);
-        \wp_enqueue_script($this->plugin_name, DW_NOTES_URL.'frontend/js/dw-notes-frontend.js', ['jquery'], $this->version, true);
+	/**
+	 * Register the JavaScript for the public-facing side of the site.
+	 *
+	 * @since    1.0.0
+	 */
+	public function enqueue_scripts()
+	{
+		\wp_enqueue_script('dw_notes_jsrender', DW_NOTES_URL . 'frontend/js/jsrender.min.js', ['jquery'], $this->version, true);
+		\wp_enqueue_script($this->plugin_name, DW_NOTES_URL . 'frontend/js/dw-notes-frontend.js', ['jquery'], $this->version, true);
 
-	    $ajax_data = null;
+		$ajax_data = [
+			'is_auth'   => 0,
+			'auth_form' => $this->auth_form()
+		];
 
-        if (\is_user_logged_in()) {
+		if (\is_user_logged_in()) {
 
-            $current_user = wp_get_current_user();
+			$current_user = wp_get_current_user();
 
-            // get custom basic auth password
-	        $user = new User($this->registry);
-	        $user_hash = $user->get_hash($current_user);
+			// get custom basic auth password
+			$user = new User($this->registry);
+			$user_hash = $user->get_hash($current_user);
 
-	        $ajax_data = [
-		        'rest_route' => 'wp-json',
-		        'rest_endpoint' => 'wp/v2/dw-notes',
-		        'security' => wp_create_nonce($this->plugin_name),
-		        'user_id' => null !== $current_user ? $current_user->ID : null,
-		        'username' => null !== $current_user ? $current_user->user_login : null,
-		        'password' => null !== $current_user ? $user_hash : null
-	        ];
-        }
+			$ajax_data = [
+				'is_auth'       => 1,
+				'rest_route'    => 'wp-json',
+				'rest_endpoint' => 'wp/v2/dw-notes',
+				'security'      => wp_create_nonce($this->plugin_name),
+				'user_id'       => null !== $current_user ? $current_user->ID : null,
+				'username'      => null !== $current_user ? $current_user->user_login : null,
+				'password'      => null !== $current_user ? $user_hash : null,
+				'text'          => [
+					'search' => __('Search', 'dw_notes'),
+					'pad'    => __('Pad', 'dw_notes'),
+				]
+			];
+		}
 
-	    \wp_localize_script($this->plugin_name, 'ajax_data', $ajax_data);
-    }
+		\wp_localize_script($this->plugin_name, 'ajax_data', $ajax_data);
+	}
 
-    /**
-     * @source https://github.com/WP-API/Basic-Auth
-     */
-    public function json_basic_auth_handler($user)
-    {
-        global $wp_json_basic_auth_error;
+	private function auth_form()
+	{
+		$data = [
+			'auth_url'      => esc_url(site_url('wp-login.php', 'login_post')),
+			'redirect_url'  => esc_url(get_page_link(get_option('dw_notes_page_id'))),
+			'text_login'    => __('Username or Email Address', 'dw_notes'),
+			'text_password' => __('Password', 'dw_notes'),
+			'text_remember' => __(' Remember Me', 'dw_notes'),
+			'text_log_in'   => __('Log In', 'dw_notes'),
+			'text_alert'   => __('To use this page you need to login!', 'dw_notes'),
+		];
 
-        $wp_json_basic_auth_error = null;
+		return view('frontend/templates/dw-notes-auth.tmpl', $data);
+	}
 
-        // Don't authenticate twice
-        if (!empty($user)) {
-            return $user;
-        }
+	/**
+	 * @source https://github.com/WP-API/Basic-Auth
+	 */
+	public function json_basic_auth_handler($user)
+	{
+		global $wp_json_basic_auth_error;
 
-        // Check that we're trying to authenticate
-        if (!isset($_SERVER['PHP_AUTH_USER'])) {
-            return $user;
-        }
+		$wp_json_basic_auth_error = null;
 
-        $username = $_SERVER['PHP_AUTH_USER'];
-        $password = $_SERVER['PHP_AUTH_PW'];
+		// Don't authenticate twice
+		if (!empty($user)) {
+			return $user;
+		}
 
-        $user = new User($this->registry);
-        // check custom basic auth
-        $is_user = $user->auth($username, $password);
+		// Check that we're trying to authenticate
+		if (!isset($_SERVER['PHP_AUTH_USER'])) {
+			return $user;
+		}
 
-        if (!$is_user) {
-            $wp_json_basic_auth_error = 'Unauthorized';
+		$username = $_SERVER['PHP_AUTH_USER'];
+		$password = $_SERVER['PHP_AUTH_PW'];
 
-            return null;
-        }
+		$user = new User($this->registry);
+		// check custom basic auth
+		$is_user = $user->auth($username, $password);
 
-        $wp_json_basic_auth_error = true;
+		if (!$is_user) {
+			$wp_json_basic_auth_error = 'Unauthorized';
 
-        return $is_user->ID;
-    }
+			return null;
+		}
 
-    /**
-     *  @source https://github.com/WP-API/Basic-Auth
-     */
-    public function json_basic_auth_error($error)
-    {
-        // Passthrough other errors
-        if (!empty($error)) {
-            return $error;
-        }
+		$wp_json_basic_auth_error = true;
 
-        global $wp_json_basic_auth_error;
+		return $is_user->ID;
+	}
 
-        return $wp_json_basic_auth_error;
-    }
+	/**
+	 * @source https://github.com/WP-API/Basic-Auth
+	 */
+	public function json_basic_auth_error($error)
+	{
+		// Passthrough other errors
+		if (!empty($error)) {
+			return $error;
+		}
+
+		global $wp_json_basic_auth_error;
+
+		return $wp_json_basic_auth_error;
+	}
 }

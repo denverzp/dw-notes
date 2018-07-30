@@ -3,13 +3,18 @@
     <div id="notes__content"></div>
 </div>
 <script id="notesList" type="text/x-jsrender">
+<div class="notes__search">
+    <input type="text" id="notes__search-input" placeholder="{{:text.search}}">
+    <span>in</span><br>
+    <input type="text" id="notes__search-pad" placeholder="{{:text.pad}}">
+</div>
 <div class="notes__list">
     {{if notes.length}}
     <ul>
     {{for notes}}
     <li class="notes__item" data-id="{{:id}}">
         <h4>{{:title.rendered}}</h4>
-        <p>{{:~limitText(content.rendered)}}</p>
+        <p>{{:~limitText(content.rendered, 100)}}</p>
     </li>
     {{/for}}
     </ul>

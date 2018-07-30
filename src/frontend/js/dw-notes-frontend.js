@@ -11,7 +11,7 @@
             item_template: '#notesItemContent',
             loading: false,
             // rest data
-            url_base: location.protocol +'//' + location.host,
+            url_base: location.protocol + '//' + location.host,
             rest_route: ajax_data && ajax_data.rest_route || '',
             rest_endpoint: ajax_data && ajax_data.rest_endpoint || '',
             user_id: ajax_data && ajax_data.user_id || '',
@@ -19,6 +19,7 @@
             password: ajax_data && ajax_data.password || '',
             // pages
             first_load: true,
+            current_item: null,
             current_page: 1,
             pages: null,
             per_page: 10,
@@ -28,52 +29,61 @@
             tags: [],
             pads: [],
         },
+        auth: function(){
+
+        },
         init: function () {
-            var _t=this, _c=_t.config, r;
+            var _t = this, _c = _t.config, r;
             _t.initJSRenderHelpers();
-            _t.loadPageContent();
+            _t.loadListContent();
             // r = _t.RESTRequest('/163', 'post', {'title': 'note title3'});
             // r = _t.RESTRequest('', 'post', {'title': 'new title', content: 'rest created note', author: 1, status: 'publish', type: 'dw_notes'});
             // r = _t.RESTRequest('/163', 'delete', null);
 
         },
-        initJSRenderHelpers: function(){
-            $.views.helpers('limitText', function(str, limit){
-                if(typeof limit === 'undefined'){
-                    limit = 50;
+        initJSRenderHelpers: function () {
+            $.views.helpers('limitText', function (str, limit) {
+                if (typeof limit === 'undefined') {
+                    limit = 100;
                 }
                 var sliced = str.slice(0, limit);
                 return sliced + (sliced.length < str.length ? '...' : '')
             });
         },
-        bindItem: function () {},
-        unbindItem: function () {},
+        bindItem: function () {
+        },
+        unbindItem: function () {
+        },
         bind: function () {
-            var _t=this, _c=_t.config;
-            $(_c.parent).find(_c.list_parent).on('click', _c.list_item, function(e){
+            var _t = this, _c = _t.config;
+            $(_c.parent).find(_c.list_parent).on('click', _c.list_item, function (e) {
                 e.preventDefault();
                 _t.loadItemContent($(this).data('id'));
             });
         },
-        unbind: function(){
-            var _t=this, _c=_t.config;
+        unbind: function () {
+            var _t = this, _c = _t.config;
             $(_c.parent).find(_c.list_parent).off('click');
         },
-        loadItemContent: function(id){
-            var _t=this, _c=_t.config, r;
-            r = _t.RESTRequest('/'+id, 'get', null);
-            r.done(function(data){
+        loadItemContent: function (id) {
+            var _t = this, _c = _t.config, r;
+            if (id === _c.current_item) {
+                return;
+            }
+            _c.current_item = id;
+            r = _t.RESTRequest('/' + id, 'get', null);
+            r.done(function (data) {
                 _c.loading = false;
                 var tmpl = $.templates(_c.item_template);
                 $(_c.content_target).html(tmpl.render({note: data}));
                 _t.bindItem();
-            }).fail(function(err){
+            }).fail(function (err) {
                 _c.loading = false;
                 console.error(err);
             });
         },
-        loadPageContent: function(){
-            var _t=this, _c=_t.config, r;
+        loadListContent: function () {
+            var _t = this, _c = _t.config, r;
             _t.unbind();
             r = _t.RESTRequest('', 'get', {
                 page: _c.current_page,
@@ -85,38 +95,47 @@
                 tags: _c.tags,
                 pads: _c.pads,
             });
-            r.done(function(data){
+            r.done(function (data) {
                 _c.loading = false;
                 var tmpl = $.templates(_c.list_template);
-                $(_c.list_target).html(tmpl.render({notes: data}));
+                $(_c.list_target).html(tmpl.render({notes: data, text: ajax_data.text}));
                 _t.bind();
-                if(_c.first_load){
+                if (_c.first_load) {
                     _c.first_load = !_c.first_load;
                     $(_c.parent).find(_c.list_parent + ' ' + _c.list_item).first().trigger('click');
                 }
-            }).fail(function(err){
+            }).fail(function (err) {
                 _c.loading = false;
                 console.error(err);
             });
         },
-        RESTRequest: function(url, type, data){
-            var _t=this, _c=_t.config, r;
+        RESTRequest: function (url, type, data) {
+            var _t = this, _c = _t.config;
             _c.loading = true;
             return $.ajax({
-                url: _c.url_base  + '/' + _c.rest_route + '/' + _c.rest_endpoint + url,
+                url: _c.url_base + '/' + _c.rest_route + '/' + _c.rest_endpoint + url,
                 type: type,
                 dataType: 'json',
                 data: data,
                 beforeSend: function (xhr) {
-                    xhr.setRequestHeader ("Authorization", "Basic " + btoa(_c.username + ":" + _c.password));
+                    xhr.setRequestHeader("Authorization", "Basic " + btoa(_c.username + ":" + _c.password));
                 },
             });
         }
     };
 
     $(document).ready(function () {
-        if(ajax_data !== null && $(dw_notes.config.parent).length){
-            dw_notes.init();
+        if (ajax_data.is_auth === '1') {
+            if($(dw_notes.config.parent).length){
+                dw_notes.init();
+            }
+        } else {
+            // need auth
+            $(dw_notes.config.parent).html(ajax_data.auth_form);
+            // $(dw_notes.config.parent).on('submit', '#form_auth', function(e){
+            //     e.preventDefault();
+            //     dw_notes.auth();
+            // });
         }
     });
 

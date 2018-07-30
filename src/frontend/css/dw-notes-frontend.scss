@@ -18,11 +18,18 @@ $grey: rgba(60, 60, 60, 0.5);
 
   .notes__list {
     display: block;
-    position: absolute;
-    top:0;
-    bottom:0;
-    left:0;
-    right: 0;
+  }
+
+  .notes__search{
+    padding: 0;
+    margin-bottom: 0.5rem;
+
+    input {
+      width: calc(100% - .25rem);
+      padding: 0.25rem;
+      border-color: $light_grey;
+    }
+
   }
 
   ul {
@@ -46,6 +53,12 @@ $grey: rgba(60, 60, 60, 0.5);
     margin-bottom: 0.5rem;
     text-overflow: ellipsis;
     padding: 0.25rem;
+    cursor: pointer;
+
+    p {
+      font-size: .75rem;
+      margin:0;
+    }
   }
 }
 

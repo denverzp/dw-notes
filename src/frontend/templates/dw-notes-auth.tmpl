@@ -1,0 +1,27 @@
+<h2><?php echo $text_alert ?></h2>
+<form id="form_auth" action="<?php echo $auth_url ?>" method="post">
+    <p>
+        <label for="user_login"><?php echo $text_login ?><br>
+            <input type="text" name="log" id="user_login" aria-describedby="login_error" class="input" value=""
+                   size="20" data-cip-id="user_login">
+        </label>
+    </p>
+    <p>
+        <label for="user_pass"><?php echo $text_password ?><br>
+            <input type="password" name="pwd" id="user_pass" aria-describedby="login_error" class="input" value=""
+                   size="20" data-cip-id="user_pass">
+        </label>
+    </p>
+    <p class="forgetmenot">
+        <label for="rememberme">
+            <input name="rememberme" type="checkbox" id="rememberme"
+                   value="forever"><?php echo $text_remember ?>
+        </label>
+    </p>
+    <p class="submit">
+        <input type="submit" name="wp-submit" id="wp-submit" class="button button-primary button-large"
+               value="<?php echo $text_log_in ?>">
+        <input type="hidden" name="redirect_to" value="<?php echo $redirect_url ?>">
+        <input type="hidden" name="testcookie" value="1">
+    </p>
+</form>
