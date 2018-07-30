@@ -1,6 +1,6 @@
-(function ($, ajax_data) {
+(function (w, $, ajax_data) {
 
-    var dw_notes = {
+    w.dw_notes = {
         config: {
             parent: '#dw-notes-app',
             list_template: '#notesList',
@@ -21,7 +21,8 @@
             first_load: true,
             current_item: null,
             current_page: 1,
-            pages: null,
+            total_notes: null,
+            total_pages: null,
             per_page: 10,
             order: 'asc', // asc, desc
             orderby: 'date', // "author", "date", "id","include", "modified", "parent", "relevance", "slug", "include_slugs", "title"
@@ -95,7 +96,7 @@
                 tags: _c.tags,
                 pads: _c.pads,
             });
-            r.done(function (data) {
+            r.done(function (data, status, jqXHR) {
                 _c.loading = false;
                 var tmpl = $.templates(_c.list_template);
                 $(_c.list_target).html(tmpl.render({notes: data, text: ajax_data.text}));
@@ -104,6 +105,9 @@
                     _c.first_load = !_c.first_load;
                     $(_c.parent).find(_c.list_parent + ' ' + _c.list_item).first().trigger('click');
                 }
+                //response headers
+                _c.total_notes  = parseInt( jqXHR.getResponseHeader('X-WP-Total'));
+                _c.total_pages  = parseInt( jqXHR.getResponseHeader('X-WP-TotalPages'));
             }).fail(function (err) {
                 _c.loading = false;
                 console.error(err);
@@ -126,17 +130,13 @@
 
     $(document).ready(function () {
         if (ajax_data.is_auth === '1') {
-            if($(dw_notes.config.parent).length){
-                dw_notes.init();
+            if($(w.dw_notes.config.parent).length){
+                w.dw_notes.init();
             }
         } else {
             // need auth
-            $(dw_notes.config.parent).html(ajax_data.auth_form);
-            // $(dw_notes.config.parent).on('submit', '#form_auth', function(e){
-            //     e.preventDefault();
-            //     dw_notes.auth();
-            // });
+            $(w.dw_notes.config.parent).html(ajax_data.auth_form);
         }
     });
 
-})(jQuery, ajax_data);
+})(window, jQuery, ajax_data);
