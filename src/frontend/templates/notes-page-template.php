@@ -6,7 +6,7 @@
 ?>
 <?php \get_header(); ?>
 
-<div class="wrap">
+<div class="container is-fullhd">
 <div id="primary" class="content-area">
 	<main id="main" class="site-main" role="main">
 

@@ -1,4 +1,4 @@
-<div class="notes__block">
+<div class="notes__block container is-widescreen">
     <div id="notes__column"></div>
     <div id="notes__content"></div>
 </div>
@@ -27,6 +27,16 @@
 {{if note}}
 <div class="notes__item-content" data-id="{{:id}}">
     <h2>{{:note.title.rendered}}</h4>
+    <hr>
+    <div class="note__controls level">
+        <div class="level-right">
+                <button type="button" id="del-note" data-id="{{:id}}" class="button is-small is-danger is-outlined"><i class="fas fa-close"></i></button>
+        </div>
+        <div class="level-left">
+            <div class="level-item">
+            </div>
+        </div>
+    </div>
     <p>{{:note.content.rendered}}</p>
 </div>
 {{/if}}

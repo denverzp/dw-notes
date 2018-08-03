@@ -19,6 +19,8 @@ class NotesFrontend extends BaseController
 	 */
 	public function enqueue_styles()
 	{
+		\wp_enqueue_style('dw_notes_bulma', DW_NOTES_URL . 'frontend/css/bulma-0.7.1/bulma.min.css', [], '0.7.1', 'all');
+		\wp_enqueue_style('dw_notes_font_awesome', DW_NOTES_URL . 'frontend/css/fontawesome/css/all.min.css', [], '4.7.0', 'all');
 		\wp_enqueue_style($this->plugin_name, DW_NOTES_URL . 'frontend/css/dw-notes-frontend.css', [], $this->version, 'all');
 	}
 
@@ -49,7 +51,6 @@ class NotesFrontend extends BaseController
 				'is_auth'       => 1,
 				'rest_route'    => 'wp-json',
 				'rest_endpoint' => 'wp/v2/dw-notes',
-				'security'      => wp_create_nonce($this->plugin_name),
 				'user_id'       => null !== $current_user ? $current_user->ID : null,
 				'username'      => null !== $current_user ? $current_user->user_login : null,
 				'password'      => null !== $current_user ? $user_hash : null,
@@ -72,7 +73,7 @@ class NotesFrontend extends BaseController
 			'text_password' => __('Password', 'dw_notes'),
 			'text_remember' => __(' Remember Me', 'dw_notes'),
 			'text_log_in'   => __('Log In', 'dw_notes'),
-			'text_alert'   => __('To use this page you need to login!', 'dw_notes'),
+			'text_alert'    => __('To use this page you need to login!', 'dw_notes'),
 		];
 
 		return view('frontend/templates/dw-notes-auth.tmpl', $data);
@@ -80,6 +81,7 @@ class NotesFrontend extends BaseController
 
 	/**
 	 * @source https://github.com/WP-API/Basic-Auth
+	 * @modified not use user password - use generated hash as password
 	 */
 	public function json_basic_auth_handler($user)
 	{
@@ -117,6 +119,7 @@ class NotesFrontend extends BaseController
 
 	/**
 	 * @source https://github.com/WP-API/Basic-Auth
+	 * @modified not use user password - use generated hash as password
 	 */
 	public function json_basic_auth_error($error)
 	{
